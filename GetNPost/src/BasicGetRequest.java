@@ -3,6 +3,7 @@
 //
 // Created by mscndle on 3/25/14
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.net.HttpURLConnection;
@@ -24,13 +25,9 @@ public class BasicGetRequest {
 
     }
 
-
-
     public static void sendGet() throws IOException {
 
-//        HttpURLConnection
         String url = "https://www.google.com/#q=mandeep";
-
         URL obj = new URL(url);
 
         // connection is opened at this line
@@ -65,8 +62,6 @@ public class BasicGetRequest {
         while ((input = in.readLine()) != null) {
             response.append(input);
         }
-
-        //close the connection
         in.close();
 
         System.out.println(response.toString());
@@ -77,9 +72,18 @@ public class BasicGetRequest {
 
         String url = "https://www.google.com/#q=mandeep";
         URL obj = new URL(url);
-
         HttpURLConnection postConn = (HttpURLConnection) obj.openConnection();
+
+        //Request headers
         postConn.setRequestMethod("POST");
+        postConn.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+
+        //Send post request
+        postConn.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(postConn.getOutputStream());
+        //wr.writeBytes(urlParameters);
+        wr.flush();
+        wr.close();
 
         int responseCode = postConn.getResponseCode();
 
